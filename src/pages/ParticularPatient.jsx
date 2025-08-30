@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import Sidebar from "../../../components/healthcare/Sidebar";
-import Header from "../../../components/healthcare/Header";
+import Sidebar from "../pages/component/SideBar";
+import Header from "../pages/component/Header";
 import { 
   Heart, 
   Droplets, 
@@ -101,7 +101,7 @@ const alerts = [
   }
 ];
 
-export default function PatientDetail({ params }) {
+export default function ParticularPatientDetail({ params }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedVital, setSelectedVital] = useState("heartRate");
   const [doctorNotes, setDoctorNotes] = useState("Patient showing steady improvement. Vitals within acceptable ranges. Continue current medication regimen. Monitor for any signs of complications.");

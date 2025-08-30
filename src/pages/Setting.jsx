@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import Sidebar from "../../components/healthcare/Sidebar";
-import Header from "../../components/healthcare/Header";
+import Sidebar from "../pages/component/SideBar";
+import Header from "../pages/component/Header";
 import { 
   User, 
   Mail, 

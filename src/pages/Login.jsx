@@ -1,220 +1,324 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import Sidebar from "../components/healthcare/Sidebar";
-import Header from "../components/healthcare/Header";
-import PatientCard from "../components/healthcare/PatientCard";
-import VitalsTrendChart from "../components/healthcare/VitalsTrendChart";
+import { Mail, Lock, Eye, EyeOff, User, ArrowRight } from "lucide-react";
 
-const dummyPatients = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    age: 45,
-    ward: "ICU-1",
-    heartRate: 98,
-    spo2: 97,
-    bloodPressure: { systolic: 120, diastolic: 80 },
-    temperature: 98.6,
-    status: "stable",
-    lastUpdated: "2 min ago"
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    age: 62,
-    ward: "Ward-3A",
-    heartRate: 125,
-    spo2: 89,
-    bloodPressure: { systolic: 145, diastolic: 95 },
-    temperature: 99.2,
-    status: "critical",
-    lastUpdated: "1 min ago"
-  },
-  {
-    id: 3,
-    name: "Emily Rodriguez",
-    age: 34,
-    ward: "Ward-2B",
-    heartRate: 78,
-    spo2: 98,
-    bloodPressure: { systolic: 115, diastolic: 75 },
-    temperature: 98.1,
-    status: "stable",
-    lastUpdated: "5 min ago"
-  },
-  {
-    id: 4,
-    name: "David Thompson",
-    age: 58,
-    ward: "ICU-2",
-    heartRate: 102,
-    spo2: 94,
-    bloodPressure: { systolic: 130, diastolic: 85 },
-    temperature: 97.8,
-    status: "monitoring",
-    lastUpdated: "3 min ago"
-  },
-  {
-    id: 5,
-    name: "Lisa Park",
-    age: 29,
-    ward: "Ward-1A",
-    heartRate: 72,
-    spo2: 99,
-    bloodPressure: { systolic: 110, diastolic: 70 },
-    temperature: 98.4,
-    status: "stable",
-    lastUpdated: "7 min ago"
-  },
-  {
-    id: 6,
-    name: "Robert Wilson",
-    age: 71,
-    ward: "ICU-3",
-    heartRate: 88,
-    spo2: 91,
-    bloodPressure: { systolic: 140, diastolic: 90 },
-    temperature: 99.1,
-    status: "monitoring",
-    lastUpdated: "4 min ago"
-  }
-];
+export default function Login() {
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
 
-export default function Dashboard() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState(null);
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
 
-  const handlePatientClick = (patient) => {
-    window.location.href = `/patient/${patient.id}`;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Simulate login - redirect to dashboard
+    window.location.href = "/";
+  };
+
+  const handleSocialLogin = (provider) => {
+    console.log(`Login with ${provider}`);
+    // Simulate social login - redirect to dashboard
+    window.location.href = "/";
   };
 
   return (
-    <div className="flex h-screen bg-white">
-      {/* Mobile sidebar overlay */}
-      {sidebarOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <div
-        className={`
-        fixed lg:static inset-y-0 left-0 z-50 lg:z-auto
-        transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-        lg:translate-x-0 transition-transform duration-300 ease-in-out
-      `}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex">
+      {/* Left side - Hero Illustration */}
+      <motion.div
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8 }}
+        className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800 relative overflow-hidden"
       >
-        <Sidebar onClose={() => setSidebarOpen(false)} />
-      </div>
-
-      {/* Main content */}
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header 
-          onMenuClick={() => setSidebarOpen(true)} 
-          title="Patient Dashboard"
-        />
-
-        <div className="flex-1 overflow-y-auto p-6">
-          {/* Dashboard Stats */}
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/90 to-blue-800/90" />
+        
+        {/* Content */}
+        <div className="relative z-10 flex flex-col justify-center p-12 text-white">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"
+            transition={{ delay: 0.3, duration: 0.8 }}
           >
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-2xl border border-blue-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-blue-600 text-sm font-medium">Total Patients</p>
-                  <p className="text-3xl font-bold text-blue-900">{dummyPatients.length}</p>
-                </div>
-                <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
-                  <span className="text-white text-xl">👥</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-2xl border border-green-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-green-600 text-sm font-medium">Stable</p>
-                  <p className="text-3xl font-bold text-green-900">
-                    {dummyPatients.filter(p => p.status === 'stable').length}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
-                  <span className="text-white text-xl">✅</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-2xl border border-orange-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-orange-600 text-sm font-medium">Monitoring</p>
-                  <p className="text-3xl font-bold text-orange-900">
-                    {dummyPatients.filter(p => p.status === 'monitoring').length}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
-                  <span className="text-white text-xl">⚠️</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-2xl border border-red-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-red-600 text-sm font-medium">Critical</p>
-                  <p className="text-3xl font-bold text-red-900">
-                    {dummyPatients.filter(p => p.status === 'critical').length}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center">
-                  <span className="text-white text-xl">🚨</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Patient Cards Grid */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="mb-8"
-          >
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 font-inter">Active Patients</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {dummyPatients.map((patient, index) => (
+            <h1 className="text-5xl font-bold mb-6 font-inter">
+              Future of Healthcare
+            </h1>
+            <p className="text-xl mb-8 text-blue-100 leading-relaxed">
+              Advanced patient monitoring with AI-powered insights. 
+              Real-time vitals tracking and intelligent alerts for better patient outcomes.
+            </p>
+            
+            {/* Features List */}
+            <div className="space-y-4">
+              {[
+                "Real-time patient monitoring",
+                "AI-powered health insights", 
+                "Intelligent alert system",
+                "Comprehensive analytics dashboard"
+              ].map((feature, index) => (
                 <motion.div
-                  key={patient.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  onClick={() => handlePatientClick(patient)}
-                  className="cursor-pointer"
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 + index * 0.1 }}
+                  className="flex items-center gap-3"
                 >
-                  <PatientCard patient={patient} />
+                  <div className="w-2 h-2 bg-blue-300 rounded-full" />
+                  <span className="text-blue-100">{feature}</span>
                 </motion.div>
               ))}
             </div>
           </motion.div>
+        </div>
 
-          {/* Vitals Trend Chart */}
+        {/* Decorative Elements */}
+        <div className="absolute top-20 right-20 w-32 h-32 bg-white/10 rounded-full blur-xl" />
+        <div className="absolute bottom-20 left-20 w-24 h-24 bg-white/10 rounded-full blur-xl" />
+        <div className="absolute top-1/2 right-10 w-16 h-16 bg-white/10 rounded-full blur-xl" />
+      </motion.div>
+
+      {/* Right side - Login Form */}
+      <motion.div
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8 }}
+        className="w-full lg:w-1/2 flex items-center justify-center p-8"
+      >
+        <div className="w-full max-w-md">
+          {/* Logo */}
           <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-center mb-8"
+          >
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <div className="text-white text-2xl font-bold">M</div>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-800 font-inter">
+              {isSignUp ? "Create Account" : "Welcome Back"}
+            </h2>
+            <p className="text-gray-600 mt-2">
+              {isSignUp 
+                ? "Join the future of healthcare monitoring" 
+                : "Sign in to your healthcare dashboard"
+              }
+            </p>
+          </motion.div>
+
+          {/* Form */}
+          <motion.form
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
+            onSubmit={handleSubmit}
+            className="space-y-6"
           >
-            <VitalsTrendChart />
+            {/* Name field - only for signup */}
+            {isSignUp && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="relative"
+              >
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  className="w-full pl-11 pr-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all bg-white/50 backdrop-blur-sm font-inter"
+                  required={isSignUp}
+                />
+              </motion.div>
+            )}
+
+            {/* Email field */}
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <motion.input
+                whileFocus={{ scale: 1.02 }}
+                type="email"
+                placeholder="Email Address"
+                value={formData.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                className="w-full pl-11 pr-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all bg-white/50 backdrop-blur-sm font-inter"
+                required
+              />
+            </div>
+
+            {/* Password field */}
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <motion.input
+                whileFocus={{ scale: 1.02 }}
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={formData.password}
+                onChange={(e) => handleInputChange('password', e.target.value)}
+                className="w-full pl-11 pr-11 py-4 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all bg-white/50 backdrop-blur-sm font-inter"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+
+            {/* Confirm Password field - only for signup */}
+            {isSignUp && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="relative"
+              >
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Confirm Password"
+                  value={formData.confirmPassword}
+                  onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                  className="w-full pl-11 pr-11 py-4 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all bg-white/50 backdrop-blur-sm font-inter"
+                  required={isSignUp}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </motion.div>
+            )}
+
+            {/* Remember Me - only for login */}
+            {!isSignUp && (
+              <div className="flex items-center justify-between">
+                <motion.label
+                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="sr-only"
+                  />
+                  <div className={`w-5 h-5 rounded border-2 transition-all ${
+                    rememberMe 
+                      ? 'bg-blue-500 border-blue-500' 
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}>
+                    {rememberMe && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="w-full h-full flex items-center justify-center"
+                      >
+                        <div className="w-2 h-2 bg-white rounded-sm" />
+                      </motion.div>
+                    )}
+                  </div>
+                  <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                </motion.label>
+                
+                <button
+                  type="button"
+                  className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  Forgot password?
+                </button>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-xl font-semibold text-lg shadow-lg hover:from-blue-600 hover:to-blue-700 transition-all flex items-center justify-center gap-2 font-inter"
+            >
+              {isSignUp ? "Create Account" : "Sign In"}
+              <ArrowRight size={20} />
+            </motion.button>
+          </motion.form>
+
+          {/* Social Login */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mt-8"
+          >
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => handleSocialLogin('Google')}
+                className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-xl shadow-sm bg-white hover:bg-gray-50 transition-colors"
+              >
+                <span className="text-sm font-medium text-gray-700">Google</span>
+              </motion.button>
+              
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => handleSocialLogin('LinkedIn')}
+                className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-xl shadow-sm bg-white hover:bg-gray-50 transition-colors"
+              >
+                <span className="text-sm font-medium text-gray-700">LinkedIn</span>
+              </motion.button>
+            </div>
+          </motion.div>
+
+          {/* Toggle Sign Up / Sign In */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="mt-8 text-center"
+          >
+            <p className="text-gray-600">
+              {isSignUp ? "Already have an account?" : "Don't have an account?"}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsSignUp(!isSignUp)}
+                className="ml-2 text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+              >
+                {isSignUp ? "Sign In" : "Sign Up"}
+              </motion.button>
+            </p>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

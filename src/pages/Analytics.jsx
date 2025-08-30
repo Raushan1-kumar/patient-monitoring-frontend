@@ -17,8 +17,8 @@ import {
   Legend, 
   ResponsiveContainer 
 } from 'recharts';
-import Sidebar from "../../components/healthcare/Sidebar";
-import Header from "../../components/healthcare/Header";
+import Sidebar from "../pages/component/SideBar";
+import Header from "../pages/component/Header";
 import { 
   TrendingUp, 
   TrendingDown, 

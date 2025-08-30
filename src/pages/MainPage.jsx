@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import Sidebar from "../components/healthcare/Sidebar";
-import Header from "../components/healthcare/Header";
-import PatientCard from "../components/healthcare/PatientCard";
-import VitalsTrendChart from "../components/healthcare/VitalsTrendChart";
+import Sidebar from "../pages/component/SideBar";
+import Header from "../pages/component/Header";
+import PatientCard from "../pages/component/PatientCard";
+import VitalsTrendChart from "../pages/component/VitalsTrendChart";
+
 
 const dummyPatients = [
   {
