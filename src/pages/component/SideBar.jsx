@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
 import {
   LayoutDashboard,
@@ -14,8 +15,9 @@ import {
 } from "lucide-react";
 
 export default function Sidebar({ onClose }) {
-  const [activeItem, setActiveItem] = useState("Dashboard");
   const [expandedMenus, setExpandedMenus] = useState({});
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleSubmenu = (item) => {
     setExpandedMenus((prev) => ({
@@ -24,12 +26,11 @@ export default function Sidebar({ onClose }) {
     }));
   };
 
-  const handleItemClick = (itemName, hasSubmenu, href) => {
-    setActiveItem(itemName);
+  const handleItemClick = (itemName, hasSubmenu, path) => {
     if (hasSubmenu) {
       toggleSubmenu(itemName);
-    } else if (href) {
-      window.location.href = href;
+    } else if (path) {
+      navigate(path);
     }
     // Close sidebar on mobile when item is clicked
     if (onClose && typeof window !== "undefined" && window.innerWidth < 1024) {
@@ -38,22 +39,22 @@ export default function Sidebar({ onClose }) {
   };
 
   const navigationItems = [
-    { name: "Dashboard", icon: LayoutDashboard, hasSubmenu: false, href: "/" },
-    { name: "Patients", icon: Users, hasSubmenu: false, href: "/patients" },
+    { name: "Dashboard", icon: LayoutDashboard, hasSubmenu: false, path: "/" },
+    { name: "Patients", icon: Users, hasSubmenu: false, path: "/patients" },
     {
       name: "Patient Detail",
       icon: UserCheck,
       hasSubmenu: false,
-      href: "/patient/1",
+      path: "/patient/1",
     },
     {
       name: "Analytics",
       icon: BarChart3,
       hasSubmenu: false,
-      href: "/analytics",
+      path: "/analytics",
     },
-    { name: "Alerts", icon: AlertTriangle, hasSubmenu: false, href: "/alerts" },
-    { name: "Settings", icon: Settings, hasSubmenu: false, href: "/settings" },
+    { name: "Alerts", icon: AlertTriangle, hasSubmenu: false, path: "/alerts" },
+    { name: "Settings", icon: Settings, hasSubmenu: false, path: "/settings" },
   ];
 
   return (
@@ -79,7 +80,10 @@ export default function Sidebar({ onClose }) {
         <div className="space-y-2">
           {navigationItems.map((item) => {
             const Icon = item.icon;
-            const isActive = activeItem === item.name;
+            // Highlight if the current path matches the item's path (exact or as a prefix for subpages)
+            const isActive =
+              location.pathname === item.path ||
+              (item.path !== "/" && location.pathname.startsWith(item.path));
             const isExpanded = expandedMenus[item.name];
 
             return (
@@ -88,7 +92,7 @@ export default function Sidebar({ onClose }) {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() =>
-                    handleItemClick(item.name, item.hasSubmenu, item.href)
+                    handleItemClick(item.name, item.hasSubmenu, item.path)
                   }
                   className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 ${
                     isActive
@@ -151,7 +155,7 @@ export default function Sidebar({ onClose }) {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => (window.location.href = "/login")}
+            onClick={() => navigate("/login")}
             className="w-full mt-4 px-3 py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
           >
             Login / Demo
@@ -161,6 +165,3 @@ export default function Sidebar({ onClose }) {
     </div>
   );
 }
-
-
-
